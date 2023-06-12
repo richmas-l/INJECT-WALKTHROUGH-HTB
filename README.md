@@ -7,6 +7,7 @@ This is a step-by-step walkthrough of the Hack The Box Easy Machine: Inject, I w
 
 ## ENVIRONMENTS USED
 - Kali linux</b> 
+- Burp suite
 
 ## Work Space
 Lets first create the directory we will be working in and cd into it.
@@ -18,7 +19,7 @@ mkdir inject && cd inject
 
 ## Reconnaissance
 We start of with a complete port scan of the machine using nmap. The following scans are open
-- Port 22
+- Port 22: We will potentially SSH into this machine. 
 - Port 8080
 
 We will enumerate port 8080, and see what we can find along the way to gain access.
@@ -29,103 +30,101 @@ sudo nmap -sVC -p- -T4 -Pn --open -O {target} -oN tcpfullscan
 <img src="https://imgur.com/ukTWtoH.png"
      style="float: left; margin-right: 10px;" />
 
-## Port 8080
+### Port 8080
 We start off by visiting the webserver and exploring it. 
 
 <img src="https://imgur.com/LomWQ2w.png"
      style="float:  left; margin-right: 10px;" />
-##   
+     
+## Webserver analysis  
+- checking the web on wappalyzer we can note that the webserver is running on Bootstrap. 
 - login gives me an error page.
 - register page is under construction and not much we can do.   
-- we spot an upload function, first I will attempt to uplaod a random file and see if there arent any restrictions. 
+- we spot an upload function, first I will attempt to uplaod the HTB Inject png image and see if there arent any restrictions. 
 <img src="https://imgur.com/drfEhS9.png"
      style="float: left; margin-right:10px;"  />
+  
+## LFI
+- I wa able to upload and view the uploaded image, this parameter was reflected on the URL which means the websever could probably be vunerable to Local file inclusion. 
+- Now that I know we can upload onto the webserver, I will run Burp Suite to try catch the requests we send. 
+<img src="https://imgur.com/WqErkDX.png"
+     style="float: left; margin-right:10px;" />
+  
+## BURP SUITE
+- I will start burp suite, upload the file and turn on interceptor. 
+- Once captured, I can manipulte the get requests to find where the image was uploaded. 
+<br/>
+<img src="https://imgur.com/x1Lkt9I.png"
+     style="float: left; margin-right:10px;" />
+<br/>
+- From here on we can move around to find important info in the directories in here. 
+- We managed to find frank and Phill users and credentials. 
+
+<img src="https://imgur.com/s3CgLCZ.png"
+     style="float: left; margin-right:10px" />
+  
+<br/>
+
+<img src="https://imgur.com/xBK3fHi.png"
+     style="float: left; margin-right:10px"
 
 
+## PHP Reverse shell 
+- You can find php webshells in Kali located at the below directory. Copy it into the inject directory
+- You will then edit the file by adding the port we will listen on and our ip address. 
+```
+/usr/share/webshells/php/php-reverse-shell.php 
 
+```
+```
+cp /usr/share/webshells/php/php-reverse-shell.php 
 
+```
+```
+nano php-reverse-shell.php 
 
+```
+<img src="https://imgur.com/ce5XAAZ.png"
+     style="float: left; margin-right:10px;" />
 
-Lets start with installing the Windows Server 2019. 
+<br/>
 
-If you encounter error "**Windows cannot find microsoft Software license Terms** ..."  remove the virtual floppy drive and restart the process. 
-
-<img src="https://imgur.com/bRChFmg.png"
-     style="float: left; margin-right: 10px;" />
-
-After the installation is complete, go to pc name and change it to an easy to recognise name for a domain controller. 
-
-<img src="https://imgur.com/vo0A2sw.png"
-     style="float: left; margin-right: 10px;" />
-
-
-### Domain Controller Installation
-This will acts as a central authority that ensures security, manages access, and keeps things organized within a network of computers in an organization. 
-Restart your server, upon restart you should have a windows server manager dashboard. 
-- You will click Manage on the top right of your screen.
-- **Add roles & features**.
-- Click next on default selections until you reach server roles. 
-- Check **Active Directory Domain Services** in server roles
-
-<img src="https://imgur.com/CsIJ3In.png"
-     style="float: left; margin-right: 10px;" />
+<img src="https://imgur.com/QBGrI2J.png"
+     style="float: left; margin-right:10px;" />
      
-Click next until you finally get to install. 
-
-<img src="https://imgur.com/C6KMbCQ.png"
-     style="float: left;margin-right: 10px;" />
-
-
-Once complete with installation you will see a notification pop up on the top right. <br />
-click it **promote this server to a domain controller.**
-
-<img src="https://imgur.com/7Ww45EH.png"
-     style="float: left;margin-right: 10px;" />
-
-### Domain Controller Configuration
-Once you promote the server to domain controller, you will have a configuration pop up
-
--**Deployment configuration**: Add a new forest: Name your domain and give it a .local (company.local)<br />
--**Domain Controll Options**: Create a password<br />
--**Click next for rest of steps until installation and auto reboot**
-
-<img src="https://imgur.com/xhxf7q3.png"
-     style="float: left; margin-right: 10px;" />
-     
-### Domain Controller Complete
-You have finally completed the creation of the domain controller.<br />
-As you can see your next login will show the domain controller name/administrator
-
-<img src="https://imgur.com/6thQNjT.png"
-     style="float: left; margin-right: 10px;" />
-
-### Add 2 Users
-- Start the installation process again like you did the server above<br />
-- Rename the pc name<br />
-- Repeat once more. <br />
-- You are all done now, 2 users and the domain controller<br />
-
-<img src="https://imgur.com/54lJx7x.png"
-     style="float: left; margin-right: 10px;" />
-
-# USERS, GROUPS & POLICIES
-
-### Users
-- Start your domain controller & head over to the **Tools** tab on the top right.<br />
-- Click **Active Directory Users & Computers**<br />
-- Right click on your domain controller name, and **create new organizational units** name them Groups<br />
-
-<img src="https://imgur.com/3XyRJ6j.png"
-     style="float: left; margin-right: 10px;" />
-
-- Remove all users excluding **Administrator & Guest** in the **Users folder** and place them into the new group you created above<br />
-- Then go back into the **Users** folder where it should look like below<br />
-
-<img src="https://imgur.com/Vv6Ip7Z.png"
-     style="float: left; margin-right: 10px;" />
+    
+ 
 
 
 
 
-- <br />
-- <br />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
