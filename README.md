@@ -91,16 +91,17 @@ https://www.rapid7.com/blog/post/2022/04/01/metasploit-weekly-wrap-up-155/
 <img src="https://imgur.com/uoielW3.png"
      style="float: left; margin-right:10px;" />
  
-  <br/>
-## ROOT FLAG
-- Navigating back to the root folder of the server
-- We manaed to navigat to the automation directory from the opt directory. 
-- We can then write a script and upload into the server. 
+<br/>
+### ROOT FLAG
+<br/>
+
+- To gain root access on the server, we navigate back to the root folder, the top-level directory of the server's file system.<br/>
+- Our next step is to create a YML file that we will upload to the server. The designated location for uploading this file is **/opt/automation/tasks**.<br/>
 
 <img src="https://imgur.com/Vgm4n8g.png"
-     style="float: left; margin-right:10px;" />
-     
+     style="float: left; margin-right:10px;" />    
 <br/>
+- Once we have accessed the specified path, we proceed to write a script that will help us increase our privileges.<br/>
  
 <img src="https://imgur.com/QWIJPvB.png"
      style="float: left; margin-right:10px;" />
@@ -108,16 +109,6 @@ https://www.rapid7.com/blog/post/2022/04/01/metasploit-weekly-wrap-up-155/
 - Run a server  
 <img src="https://imgur.com/9kLQ7yG.png"
      style="float: left; margin-right:10px;" />
-     
- <br/>
-<img src="https://imgur.com/ovtyJFR"
-     style="float: left; margin-right:10px;" />
-     
-  <br/>
-<img src=""
-     style="float: left; margin-right:10px;" />
- 
-
 
 
 
