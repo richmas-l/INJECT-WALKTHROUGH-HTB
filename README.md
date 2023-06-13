@@ -1,4 +1,4 @@
-<img src="https://imgur.com/Q7fBbju.png"
+<img src="https://imgur.com/qbGYyhh.png"
      style="float: left; margin-right: 10px;" />
 
 # INTRODUCTION
@@ -53,46 +53,69 @@ We start off by visiting the webserver and exploring it.
 ## BURP SUITE
 - I will start burp suite, upload the file and turn on interceptor. 
 - Once captured, I can manipulte the get requests to find where the image was uploaded. 
+- Further enumeration of the files using burp suite I also find the framework used is the springcloud framework boot. 
 <br/>
 <img src="https://imgur.com/x1Lkt9I.png"
      style="float: left; margin-right:10px;" />
 <br/>
-- From here on we can move around to find important info in the directories in here. 
-- We managed to find frank and Phill users and credentials. 
-
-<img src="https://imgur.com/s3CgLCZ.png"
-     style="float: left; margin-right:10px" />
-  
-<br/>
+- From here on we can move around to find important info in the directories. <br/>
+- We managed to find a password and username belonging to pbil in the Frank directory. <br/> 
+- This could be useful as we move along with our enumeration. <br/>
 
 <img src="https://imgur.com/xBK3fHi.png"
-     style="float: left; margin-right:10px"
-
-
-## PHP Reverse shell 
-- You can find php webshells in Kali located at the below directory. Copy it into the inject directory
-- You will then edit the file by adding the port we will listen on and our ip address. 
-```
-/usr/share/webshells/php/php-reverse-shell.php 
-
-```
-```
-cp /usr/share/webshells/php/php-reverse-shell.php 
-
-```
-```
-nano php-reverse-shell.php 
-
-```
-<img src="https://imgur.com/ce5XAAZ.png"
-     style="float: left; margin-right:10px;" />
-
+     style="float: left; margin-right:10px" />     
 <br/>
 
-<img src="https://imgur.com/QBGrI2J.png"
+## GOOGLE FU
+- Doing some research on the framwork I find that its vunerable to the spring cloud function spell. <br/>
+- We can hop onto metasploit to exploit this vunerability. <br/>
+
+```
+https://www.rapid7.com/blog/post/2022/04/01/metasploit-weekly-wrap-up-155/
+```
+<br/>
+## METASPLOIT
+- Run metasploit and exploit the framework vunerability
+- This gives us remote access to the server. 
+- We will use this tool to find our user flag. 
+
+<img src="https://imgur.com/3UpHmN0.png"
+     style="float: left; margin-right:10px;" />
+
+- navigating through the directories we get to a user.txt file which we do not have permission to view. 
+- This means we need higher priveleges to read this file. 
+- We navigate back to phil and swicth user, which requested password that we found during our Burp suite enumeration. 
+- Navigating back to the user text, i can now read the flag. 
+
+ <br/>
+<img src="https://imgur.com/uoielW3.png"
+     style="float: left; margin-right:10px;" />
+ 
+  <br/>
+## ROOT FLAG
+- Navigating back to the root folder of the server
+- We manaed to navigat to the automation directory from the opt directory. 
+- We can then write a script and upload into the server. 
+
+<img src="https://imgur.com/Vgm4n8g.png"
      style="float: left; margin-right:10px;" />
      
-    
+<br/>
+ 
+<img src="https://imgur.com/QWIJPvB.png"
+     style="float: left; margin-right:10px;" />
+ <br/>
+- Run a server  
+<img src="https://imgur.com/9kLQ7yG.png"
+     style="float: left; margin-right:10px;" />
+     
+ <br/>
+<img src="https://imgur.com/ovtyJFR"
+     style="float: left; margin-right:10px;" />
+     
+  <br/>
+<img src=""
+     style="float: left; margin-right:10px;" />
  
 
 
