@@ -45,14 +45,12 @@ We discover an interesting feature on the webpage the upload function.  we test 
 
 By systematically probing the upload functionality, we seek to exploit any weaknesses or misconfigurations that may facilitate our progression and grant us further access to the webserver's underlying systems.
 
-<br/>     
-<img src="https://imgur.com/drfEhS9.png"
-     style="float: left; margin-right:10px;"  />
   
 ## LOCAL FILE INCLUSION
--Having successfully uploaded and viewed the image, we observe that the uploaded file's parameter is reflected in the URL. This behavior suggests a potential vulnerability known as Local File Inclusion (LFI). Exploiting this vulnerability could allow us to access files on the webserver that are not intended for public viewing.
 <br/>
-next step is to use Burp Suite to capture and analyze the requests we send to the webserver.
+Having successfully uploaded and viewed the image, we observe that the uploaded file's parameter is reflected in the URL. This behavior suggests a potential vulnerability known as Local File Inclusion (LFI). Exploiting this vulnerability could allow us to access files on the webserver that are not intended for public viewing.<br/>
+<br/>
+next step is to use Burp Suite to capture and analyze the requests we send to the webserver.<br>
 
 <br/>
 <img src="https://imgur.com/WqErkDX.png"
